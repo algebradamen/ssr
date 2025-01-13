@@ -18,6 +18,15 @@ app.get('/her', (req, res) => {
 app.get('/der', (req, res) => {
     res.send('<h1>Lurte deg det var egentlig her :D</h1>');
 });
+
+app.get('/deltager-1', (req, res) => {
+    res.send(`<h1>Deltagerne i konkuransen</h1>
+        <ul>
+        <li>Endre</li>
+        <li>Brage,</li>
+        <li>Solveig,</li>
+        <li>Jasmin</li></ul>`);
+});
 // Så starter vi serveren, som nå lytter på port 3000:
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
