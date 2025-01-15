@@ -5,6 +5,8 @@ const express = require('express');
 // Deretter lager vi en ny instans av Express:
 const app = express();
 
+app.use(express.static('public'));
+
 // Først refererer vi til driveren (som ligger i node_modules)
 const { Pool } = require('pg');
 
@@ -38,6 +40,11 @@ app.get('/bilmerker', async (req, res) => {
     res.send(html);
 });
 
+app.get('/deltagere-json', async (req, res) => {
+    const result = await pool.query('SELECT * FROM users');
+    res.json(result.rows);
+});
+
 app.get('/bilmerker-json', async (req, res) => {
     const result = await pool.query('SELECT * FROM bilmerker');
     res.json(result.rows);
@@ -45,7 +52,7 @@ app.get('/bilmerker-json', async (req, res) => {
 
 // Vi setter opp en enkel "rute" (route) som svarer på
 // forespørsler til rotkatalogen, /:
-app.get('/', (req, res) => {
+app.get('/Hello', (req, res) => {
     res.send('Hello, world! Klokken er ' + new Date().toLocaleTimeString());
 });
 
