@@ -29,6 +29,7 @@ app.get('/deltagere-2', async (req, res) => {
     res.send(html);
 });
 
+
 app.get('/bilmerker', async (req, res) => {
     const result = await pool.query('SELECT * FROM bilmerker');
     let html = "<h1>Bilmerker</h1>"
@@ -38,6 +39,33 @@ app.get('/bilmerker', async (req, res) => {
     }
     html += "</ul>"
     res.send(html);
+});
+
+
+app.get('/skuespillere-og-filmer', async (req, res) => {
+    const result = await pool.query(`
+        SELECT skuespillere.navn , filmer.tittel 
+            from skuespiller_i_film 
+            join skuespillere on skuespillere.id = skuespiller_i_film.skuespiller
+            join filmer on filmer.id = skuespiller_i_film.film`
+        );
+    let html = "<h1>Skuespillere og filmer</h1>"
+    html += "<ul>"
+    for( const row of result.rows) {
+        html += "<li>" + row.navn + " spiller i " + row.tittel + "</li>"
+    }
+    html += "</ul>"
+    res.send(html);
+});
+
+app.get('/skuespillere-og-filmer-json', async (req, res) => {
+    const result = await pool.query(`
+        SELECT skuespillere.navn , filmer.tittel 
+            from skuespiller_i_film 
+            join skuespillere on skuespillere.id = skuespiller_i_film.skuespiller
+            join filmer on filmer.id = skuespiller_i_film.film`
+        );
+    res.json(result.rows);
 });
 
 app.get('/deltagere-json', async (req, res) => {
