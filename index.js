@@ -5,6 +5,8 @@ const express = require('express');
 // Deretter lager vi en ny instans av Express:
 const app = express();
 
+app.use(express.json());
+
 app.use(express.static('public'));
 
 // Først refererer vi til driveren (som ligger i node_modules)
@@ -104,7 +106,20 @@ app.get('/deltager-1', (req, res) => {
         <li>Solveig,</li>
         <li>Jasmin</li></ul>`);
 });
+
+app.post('/deltagere', async (req, res) => {
+    const data = req.body;
+    console.log('Lagrer deltager: ', data)
+    const query = 'INSERT INTO users (name) VALUES ($1)';
+    const values = [data.name];
+    await pool.query(query, values);
+    console.log('Lagret deltager: ', data)
+    res.send('Data lagret');
+});
+
 // Så starter vi serveren, som nå lytter på port 3000:
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
 });
+
+

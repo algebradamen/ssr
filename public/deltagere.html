@@ -1,3 +1,32 @@
+<p>
+    <input id="name" placeholder="Navn på deltager" type="text">
+    <button id="add">Legg inn ny deltager</button>
+</p>
+
+<script type="module">
+    function getUserName() {
+        const inputElement = document.getElementById('name');
+        return inputElement.value;
+    }
+
+    document.getElementById('add')
+        .addEventListener('click', async (event) => {
+            const userName = getUserName();
+            await sendData(userName);
+        });
+
+    async function sendData(userName) {
+        const data = {name: userName};
+        const response = await fetch('/deltagere', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    }
+</script>
+
 <ul id="deltagere">
     <li>Henter data...</li>
 </ul>
