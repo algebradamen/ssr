@@ -80,6 +80,11 @@ app.get('/bilmerker-json', async (req, res) => {
     res.json(result.rows);
 });
 
+app.get('/skuespillere-json', async (req, res) => {
+    const result = await pool.query('SELECT * FROM skuespillere');
+    res.json(result.rows);
+});
+
 // Vi setter opp en enkel "rute" (route) som svarer på
 // forespørsler til rotkatalogen, /:
 app.get('/Hello', (req, res) => {
@@ -116,6 +121,17 @@ app.post('/deltagere', async (req, res) => {
     console.log('Lagret deltager: ', data)
     res.send('Data lagret');
 });
+
+app.post('/skuespillere', async (req, res) => {
+    const data = req.body;
+    console.log('Lagrer deltager: ', data)
+    const query = 'INSERT INTO skuespillere (navn) VALUES ($1)';
+    const values = [data.navn];
+    await pool.query(query, values);
+    console.log('Lagret skuespiller: ', data)
+    res.send('Data lagret');
+});
+
 
 // Så starter vi serveren, som nå lytter på port 3000:
 app.listen(3000, () => {

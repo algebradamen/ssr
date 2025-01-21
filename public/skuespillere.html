@@ -1,6 +1,6 @@
 <p>
-    <input id="name" placeholder="Navn på deltager" type="text">
-    <button id="add">Legg inn ny deltager</button>
+    <input id="name" placeholder="Navn på skuespiller" type="text">
+    <button id="add">Legg inn ny skuespiller</button>
 </p>
 
 <script type="module">
@@ -19,8 +19,8 @@
         });
 
     async function sendData(userName) {
-        const data = {name: userName};
-        const response = await fetch('/deltagere', {
+        const data = {navn: userName};
+        const response = await fetch('/skuespillere', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,24 +29,25 @@
         });
     }
 
-    function hentData () {
 
-    fetch('/deltagere-json')
-    .then( response => response.json() )
-    .then(data => {
-        let list = document.getElementById('deltagere');
-        list.innerHTML = '';
-        data.forEach(row => {
-            let li = document.createElement('li');
-            li.textContent = row.name;
-            list.appendChild(li);
-        });
+
+function hentData () {
+fetch('/skuespillere-json')
+.then( response => response.json() )
+.then(data => {
+    let list = document.getElementById('skuespillere');
+    list.innerHTML = '';
+    data.forEach(row => {
+        let li = document.createElement('li');
+        li.textContent = row.navn;
+        list.appendChild(li);
     });
-    }
+});
+}
 
 hentData();
 </script>
 
-<ul id="deltagere">
+<ul id="skuespillere">
     <li>Henter data...</li>
 </ul>
