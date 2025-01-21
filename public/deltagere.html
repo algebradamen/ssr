@@ -13,6 +13,9 @@
         .addEventListener('click', async (event) => {
             const userName = getUserName();
             await sendData(userName);
+            const inputElement = document.getElementById('name');
+            inputElement.value='';
+            hentData ();
         });
 
     async function sendData(userName) {
@@ -25,13 +28,10 @@
             body: JSON.stringify(data)
         });
     }
-</script>
 
-<ul id="deltagere">
-    <li>Henter data...</li>
-</ul>
-<script>
-fetch('/deltagere-json')
+    function hentData () {
+
+    fetch('/deltagere-json')
     .then( response => response.json() )
     .then(data => {
         let list = document.getElementById('deltagere');
@@ -42,5 +42,15 @@ fetch('/deltagere-json')
             list.appendChild(li);
         });
     });
+    }
+
+hentData();
+</script>
+
+<ul id="deltagere">
+    <li>Henter data...</li>
+</ul>
+<script>
+
 
 </script>
