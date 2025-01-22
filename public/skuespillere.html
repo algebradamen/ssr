@@ -1,53 +1,82 @@
 <p>
     <input id="name" placeholder="Navn på skuespiller" type="text">
-    <button id="add">Legg inn ny skuespiller</button>
+    <button id="ny-skuespiller">Legg inn ny skuespiller</button>
 </p>
-
-<script type="module">
-    function getUserName() {
-        const inputElement = document.getElementById('name');
-        return inputElement.value;
-    }
-
-    document.getElementById('add')
-        .addEventListener('click', async (event) => {
-            const userName = getUserName();
-            await sendData(userName);
-            const inputElement = document.getElementById('name');
-            inputElement.value='';
-            hentData ();
-        });
-
-    async function sendData(userName) {
-        const data = {navn: userName};
-        const response = await fetch('/skuespillere', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    }
-
-
-
-function hentData () {
-fetch('/skuespillere-json')
-.then( response => response.json() )
-.then(data => {
-    let list = document.getElementById('skuespillere');
-    list.innerHTML = '';
-    data.forEach(row => {
-        let li = document.createElement('li');
-        li.textContent = row.navn;
-        list.appendChild(li);
-    });
-});
-}
-
-hentData();
-</script>
-
 <ul id="skuespillere">
     <li>Henter data...</li>
 </ul>
+
+<p>
+    <input id="tittel" placeholder="Tittel på film" type="text">
+    <button id="ny-tittel">Legg inn ny film</button>
+</p>
+<ul id="filmer">
+    <li>Henter data...</li>
+</ul>
+
+<script type="module">
+    async function hentSkuespillere() {
+        const resp = await fetch('http://localhost:3002/skuespillere')
+        const data = await resp.json()
+        const list = document.getElementById('skuespillere');
+        list.innerHTML = '';
+        data.forEach(row => {
+            let li = document.createElement('li');
+            li.textContent = row.navn;
+            list.appendChild(li);
+        });
+    }
+    await hentSkuespillere()
+
+
+    document.getElementById('ny-skuespiller')
+      .addEventListener('click', async () => {
+          const inputElement = document.getElementById('name');
+          const navn = inputElement.value;
+          const data = { navn: navn };
+          await fetch('http://localhost:3002/skuespillere', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+          inputElement.value='';
+          await hentSkuespillere()
+});
+    
+</script>
+
+
+<script type="module">
+    async function hentFilmer() {
+        const resp = await fetch('http://localhost:3002/filmer')
+        const data = await resp.json()
+        const list = document.getElementById('filmer');
+        list.innerHTML = '';
+        data.forEach(row => {
+            let li = document.createElement('li');
+            li.textContent = row.tittel;
+            list.appendChild(li);
+        });
+    }
+    await hentFilmer()
+
+
+    document.getElementById('ny-tittel')
+      .addEventListener('click', async () => {
+          const inputElement = document.getElementById('tittel');
+          const tittel = inputElement.value;
+          const data = { tittel: tittel };
+          await fetch('http://localhost:3002/filmer', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+          });
+          inputElement.value='';
+          await hentFilmer()
+});
+    
+</script>

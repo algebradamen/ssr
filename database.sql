@@ -45,6 +45,11 @@ INSERT INTO users (name) VALUES
                         ('Laurence Fishburne'),
                         ('Carrie-Anne Moss');
                     
+    insert into skuespillere (navn) values
+   ('Tom Cruise'),
+   ('Angelina Jolie'),
+   ('Brad Pitt');
+   
 SELECT * FROM filmer;
 SELECT * FROM skuespillere;
 
